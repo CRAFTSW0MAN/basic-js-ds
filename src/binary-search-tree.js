@@ -53,13 +53,13 @@ class BinarySearchTree {
   find(data) {
     return findDot(this.branch, data);
       function findDot(dot, data) {
-         if (!dot) {
+        if (!dot) {
             return null;
-         }
-         if (dot.data === data) {
+        }
+        if (dot.data === data) {
             return dot;
-         }
-         if(dot.data > data){
+        }
+        if(dot.data > data){
           return findDot(dot.left, data);
         }else{
           return findDot(dot.right, data);
