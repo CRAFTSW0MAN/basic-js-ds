@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../lib/errors');
+const { NotImplementedError } = require("../lib/errors");
 // const { ListNode } = require('../extensions/list-node.js');
 
 /**
@@ -20,36 +20,56 @@ class ListNode {
 }
 class Queue {
   constructor() {
-    this.head = null;  // создаем значение для  начала списка
-    this.tail = null;  //создаем значение для конца списка
- }
-  
-  getUnderlyingList() {
-    return this.head; //выводим список с самого начала
+    this.head = null;
+    this.tail = null;
   }
 
-  enqueue(value) {
-    
-    const node = new ListNode(value);
+  getUnderlyingList() {
+    if (!this.head) {
+      return null;
+    }
 
-      if (!this.head || !this.tail) {
-        this.head= node;//обработка случая если не было ничего
-        this.tail = node;
-      } else {
-        this.tail.next =node;// поправляем конец списка
-        this.tail = node;
-      }
-      return this;
+    const convertToListObject = (node) => {
+      if (!node) return null;
+      return {
+        value: node.value,
+        next: convertToListObject(node.next),
+      };
+    };
+
+    return convertToListObject(this.head);
+  }
+  enqueue(value) {
+    const node = { value, next: null };
+
+    if (!this.head) {
+      this.head = node;
+      this.tail = node;
+    } else {
+      this.tail.next = node;
+      this.tail = node;
+    }
+
+    return this;
   }
 
   dequeue() {
-    let headDot = this.head; //первый эл
-    this.head = this.head.next;//убираем его из списка
-    return headDot.value;//выводим то что удалили
-  }
+    if (!this.head) {
+      return undefined;
+    }
 
+    const dequeuedValue = this.head.value;
+
+    this.head = this.head.next;
+
+    if (!this.head) {
+      this.tail = null;
+    }
+
+    return dequeuedValue;
+  }
 }
 
 module.exports = {
-  Queue
+  Queue,
 };
